@@ -9,13 +9,29 @@ class MyApp extends StatelessWidget {
       title: 'Welcome to Flutter',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Welcome to Flutter'),
+          title: Text('Login'),
         ),
-        body: Center(
-          child: Text(
-              'Hello World',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)
-          ),
+        body: Column(
+          children: <Widget>[
+            TextField(
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                labelText: 'Email',
+              ),
+            ),
+            TextField(
+              keyboardType: TextInputType.visiblePassword,
+              decoration: InputDecoration(
+                labelText: 'Password'
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () { print('Login attempt'); },
+              child: Text('Login'),
+              style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 36)),
+            ),
+          ],
         ),
       ),
     );
