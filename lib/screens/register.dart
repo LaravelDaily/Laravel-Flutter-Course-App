@@ -43,9 +43,9 @@ class Register extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            print('Login attempt');
+                            print('Register attempt');
                           },
-                          child: Text('Login'),
+                          child: Text('Register'),
                           style: ElevatedButton.styleFrom(
                               minimumSize: Size(double.infinity, 36)),
                         ),
