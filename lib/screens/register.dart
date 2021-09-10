@@ -43,7 +43,7 @@ class Register extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            print('Register attempt');
+                            Navigator.pushNamed(context, '/categories');
                           },
                           child: Text('Register'),
                           style: ElevatedButton.styleFrom(
