@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_app/categories.dart';
+import 'package:my_first_app/screens/categories.dart';
 import 'package:my_first_app/screens/login.dart';
 import 'package:my_first_app/screens/register.dart';
 
