@@ -3,17 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-class Category {
-  int id;
-  String name;
-
-  Category({required this.id, required this.name});
-
-  factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(id: json['id'], name: json['name']);
-  }
-}
+import 'package:my_first_app/models/category.dart';
 
 class Categories extends StatefulWidget {
   @override
