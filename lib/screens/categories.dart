@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_first_app/models/category.dart';
+import 'package:my_first_app/services/api.dart';
 
 class Categories extends StatefulWidget {
   @override
@@ -15,15 +16,7 @@ class _CategoriesState extends State<Categories> {
   final _formKey = GlobalKey<FormState>();
   late Category selectedCategory;
   final categoryNameController = TextEditingController();
-
-  Future<List<Category>> fetchCategories() async {
-    http.Response response = await http
-        .get(Uri.parse('http://flutter-api.laraveldaily.com/api/categories'));
-
-    List categories = jsonDecode(response.body);
-
-    return categories.map((category) => Category.fromJson(category)).toList();
-  }
+  ApiService apiService = ApiService();
 
   Future saveCategory() async {
     final form = _formKey.currentState;
@@ -32,15 +25,7 @@ class _CategoriesState extends State<Categories> {
       return;
     }
 
-    String uri = 'http://flutter-api.laraveldaily.com/api/categories/' + selectedCategory.id.toString();
-
-    await http.put(Uri.parse(uri),
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        HttpHeaders.acceptHeader: 'application/json',
-      },
-      body: jsonEncode({ 'name': categoryNameController.text })
-    );
+    apiService.updateCategory(selectedCategory.id, categoryNameController.text);
 
     Navigator.pop(context);
   }
@@ -48,7 +33,7 @@ class _CategoriesState extends State<Categories> {
   @override
   void initState() {
     super.initState();
-    futureCategories = fetchCategories();
+    futureCategories = apiService.fetchCategories();
   }
 
   @override
