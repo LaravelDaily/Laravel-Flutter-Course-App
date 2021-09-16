@@ -84,6 +84,7 @@ class _CategoriesState extends State<Categories> {
                           categoryNameController.text = category.name;
                           showModalBottomSheet(
                               context: context,
+                              isScrollControlled: true,
                               builder: (context) {
                                 return Padding(
                                     padding: EdgeInsets.all(10),
@@ -104,9 +105,21 @@ class _CategoriesState extends State<Categories> {
                                           labelText: 'Category name',
                                         ),
                                       ),
-                                      ElevatedButton(
-                                        child: Text('Save'),
-                                        onPressed: () => saveCategory(),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          ElevatedButton(
+                                            child: Text('Save'),
+                                            onPressed: () => saveCategory(),
+                                          ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.red
+                                            ),
+                                            child: Text('Cancel'),
+                                            onPressed: () => Navigator.pop(context),
+                                          ),
+                                        ]
                                       )
                                     ])
                                     )
