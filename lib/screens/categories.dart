@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:my_first_app/models/category.dart';
 import 'package:my_first_app/services/api.dart';
+import 'package:my_first_app/widgets/CategoryEdit.dart';
 
 class Categories extends StatefulWidget {
   @override
@@ -13,22 +13,7 @@ class Categories extends StatefulWidget {
 
 class _CategoriesState extends State<Categories> {
   late Future<List<Category>> futureCategories;
-  final _formKey = GlobalKey<FormState>();
-  late Category selectedCategory;
-  final categoryNameController = TextEditingController();
   ApiService apiService = ApiService();
-
-  Future saveCategory() async {
-    final form = _formKey.currentState;
-
-    if (!form!.validate()) {
-      return;
-    }
-
-    apiService.updateCategory(selectedCategory.id, categoryNameController.text);
-
-    Navigator.pop(context);
-  }
 
   @override
   void initState() {
@@ -55,50 +40,11 @@ class _CategoriesState extends State<Categories> {
                       trailing: IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () {
-                          selectedCategory = category;
-                          categoryNameController.text = category.name;
                           showModalBottomSheet(
                               context: context,
                               isScrollControlled: true,
                               builder: (context) {
-                                return Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Form(
-                                      key: _formKey,
-                                      child: Column(children: <Widget>[
-                                      TextFormField(
-                                        controller: categoryNameController,
-                                        validator: (String? value) {
-                                          if (value!.isEmpty) {
-                                            return 'Enter category name';
-                                          }
-
-                                          return null;
-                                        },
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: 'Category name',
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          ElevatedButton(
-                                            child: Text('Save'),
-                                            onPressed: () => saveCategory(),
-                                          ),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.red
-                                            ),
-                                            child: Text('Cancel'),
-                                            onPressed: () => Navigator.pop(context),
-                                          ),
-                                        ]
-                                      )
-                                    ])
-                                    )
-                                );
+                                return CategoryEdit(category);
                               }
                           );
                         },
