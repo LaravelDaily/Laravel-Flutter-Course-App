@@ -15,6 +15,7 @@ class _CategoryEditState extends State<CategoryEdit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final categoryNameController = TextEditingController();
   ApiService apiService = ApiService();
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _CategoryEditState extends State<CategoryEdit> {
 
                   return null;
                 },
+                onChanged: (text) => setState(() => errorMessage = ''),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Category name',
@@ -51,17 +53,13 @@ class _CategoryEditState extends State<CategoryEdit> {
                       onPressed: () => saveCategory(),
                     ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.red
-                      ),
+                      style: ElevatedButton.styleFrom(primary: Colors.red),
                       child: Text('Cancel'),
                       onPressed: () => Navigator.pop(context),
                     ),
-                  ]
-              )
-            ])
-        )
-    );
+                  ]),
+              Text(errorMessage, style: TextStyle(color: Colors.red))
+            ])));
   }
 
   Future saveCategory() async {
@@ -71,8 +69,13 @@ class _CategoryEditState extends State<CategoryEdit> {
       return;
     }
 
-    apiService.updateCategory(widget.category.id, categoryNameController.text);
-
-    Navigator.pop(context);
+    apiService
+        .updateCategory(widget.category.id, categoryNameController.text)
+        .then((Category category) => Navigator.pop(context))
+        .catchError((exception) {
+      setState(() {
+        errorMessage = exception.toString();
+      });
+    });
   }
 }

@@ -30,6 +30,10 @@ class ApiService {
         body: jsonEncode({ 'name': name })
     );
 
+    if (response.statusCode != 200) {
+      throw Exception('Error happened on update');
+    }
+
     return Category.fromJson(jsonDecode(response.body));
   }
 
