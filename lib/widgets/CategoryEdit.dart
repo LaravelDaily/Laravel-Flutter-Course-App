@@ -1,11 +1,11 @@
 import 'package:my_first_app/models/category.dart';
 import 'package:flutter/material.dart';
-import 'package:my_first_app/services/api.dart';
 
 class CategoryEdit extends StatefulWidget {
   final Category category;
+  final Function categoryCallback;
 
-  CategoryEdit(this.category, {Key? key}) : super(key: key);
+  CategoryEdit(this.category, this.categoryCallback, {Key? key}) : super(key: key);
 
   @override
   _CategoryEditState createState() => _CategoryEditState();
@@ -14,7 +14,6 @@ class CategoryEdit extends StatefulWidget {
 class _CategoryEditState extends State<CategoryEdit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final categoryNameController = TextEditingController();
-  ApiService apiService = ApiService();
   String errorMessage = '';
 
   @override
@@ -50,7 +49,7 @@ class _CategoryEditState extends State<CategoryEdit> {
                   children: <Widget>[
                     ElevatedButton(
                       child: Text('Save'),
-                      onPressed: () => saveCategory(),
+                      onPressed: () => saveCategory(context),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.red),
@@ -62,20 +61,16 @@ class _CategoryEditState extends State<CategoryEdit> {
             ])));
   }
 
-  Future saveCategory() async {
+  Future saveCategory(context) async {
     final form = _formKey.currentState;
 
     if (!form!.validate()) {
       return;
     }
 
-    apiService
-        .updateCategory(widget.category.id, categoryNameController.text)
-        .then((Category category) => Navigator.pop(context))
-        .catchError((exception) {
-      setState(() {
-        errorMessage = exception.toString();
-      });
-    });
+    widget.category.name = categoryNameController.text;
+
+    await widget.categoryCallback(widget.category);
+    Navigator.pop(context);
   }
 }
