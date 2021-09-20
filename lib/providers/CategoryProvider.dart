@@ -17,6 +17,17 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> addCategory(String name) async {
+    try {
+      Category addedCategory = await apiService.addCategory(name);
+      categories.add(addedCategory);
+
+      notifyListeners();
+    } catch (Exception) {
+      print(Exception);
+    }
+  }
+
   Future<void> updateCategory(Category category) async {
     try {
       Category updatedCategory = await apiService.updateCategory(category);

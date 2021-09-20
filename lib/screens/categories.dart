@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/widgets/CategoryAdd.dart';
 import 'package:provider/provider.dart';
 import 'package:my_first_app/models/category.dart';
 import 'package:my_first_app/widgets/CategoryEdit.dart';
@@ -64,7 +65,19 @@ class _CategoriesState extends State<Categories> {
               ]),
             );
           },
-        ));
+        ),
+        floatingActionButton: new FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return CategoryAdd(provider.addCategory);
+                });
+          },
+          child: new Icon(Icons.add)
+        )
+    );
   }
 
   Future deleteCategory(Function callback, Category category) async {
