@@ -66,7 +66,7 @@ class _CategoriesState extends State<Categories> {
             );
           },
         ),
-        floatingActionButton: new FloatingActionButton(
+      floatingActionButton: new FloatingActionButton(
           onPressed: () {
             showModalBottomSheet(
                 isScrollControlled: true,
@@ -75,8 +75,8 @@ class _CategoriesState extends State<Categories> {
                   return CategoryAdd(provider.addCategory);
                 });
           },
-          child: new Icon(Icons.add)
-        )
+          child: Icon(Icons.add)
+      ),
     );
   }
 
