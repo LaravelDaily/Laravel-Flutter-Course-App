@@ -1,6 +1,9 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/providers/AuthProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:device_info/device_info.dart';
 
 class Register extends StatefulWidget {
   Register();
@@ -18,6 +21,13 @@ class _RegisterState extends State<Register> {
   final passwordConfirmController = TextEditingController();
 
   String errorMessage = '';
+  late String deviceName;
+
+  @override
+  void initState() {
+    super.initState();
+    getDeviceName();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,13 +154,35 @@ class _RegisterState extends State<Register> {
           emailController.text,
           passwordController.text,
           passwordConfirmController.text,
-          'Some device name'
+          deviceName
       );
 
       Navigator.pop(context);
     } catch (Exception) {
       setState(() {
         errorMessage = Exception.toString().replaceAll('Exception: ', '');
+      });
+    }
+  }
+
+  Future<void> getDeviceName() async {
+    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+
+    try {
+      if (Platform.isAndroid) {
+        var build = await deviceInfoPlugin.androidInfo;
+        setState(() {
+          deviceName = build.model;
+        });
+      } else if (Platform.isIOS) {
+        var build = await deviceInfoPlugin.iosInfo;
+        setState(() {
+          deviceName = build.model;
+        });
+      }
+    } on PlatformException {
+      setState(() {
+        deviceName = 'Failed to get platform version';
       });
     }
   }
