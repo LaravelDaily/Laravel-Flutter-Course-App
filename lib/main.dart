@@ -18,15 +18,13 @@ class MyApp extends StatelessWidget {
           return MultiProvider(
               providers: [
                 ChangeNotifierProvider<CategoryProvider>(
-                    create: (context) => CategoryProvider()),
-                ChangeNotifierProvider<AuthProvider>(
-                    create: (context) => AuthProvider()),
+                    create: (context) => CategoryProvider(authProvider))
               ],
               child: MaterialApp(title: 'Welcome to Flutter', routes: {
                 '/': (context) {
                   final authProvider = Provider.of<AuthProvider>(context);
                   if (authProvider.isAuthenticated) {
-                    return Home();
+                    return Categories();
                   } else {
                     return Login();
                   }

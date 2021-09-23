@@ -1,4 +1,3 @@
-import 'package:my_first_app/models/category.dart';
 import 'package:flutter/material.dart';
 
 class CategoryAdd extends StatefulWidget {

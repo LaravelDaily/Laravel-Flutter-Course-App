@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:my_first_app/models/category.dart';
+import 'package:my_first_app/providers/AuthProvider.dart';
 import 'package:my_first_app/services/api.dart';
 
 class CategoryProvider extends ChangeNotifier {
   List<Category> categories = [];
   late ApiService apiService;
+  late AuthProvider authProvider;
 
-  CategoryProvider() {
-    this.apiService = ApiService();
+  CategoryProvider(AuthProvider authProvider) {
+    this.authProvider = authProvider;
+    this.apiService = ApiService(authProvider.token);
 
     init();
   }
@@ -24,7 +27,7 @@ class CategoryProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (Exception) {
-      print(Exception);
+      await authProvider.logOut();
     }
   }
 
@@ -36,7 +39,7 @@ class CategoryProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (Exception) {
-      print(Exception);
+      await authProvider.logOut();
     }
   }
 
@@ -47,7 +50,7 @@ class CategoryProvider extends ChangeNotifier {
       categories.remove(category);
       notifyListeners();
     } catch (Exception) {
-      print(Exception);
+      await authProvider.logOut();
     }
   }
 }
