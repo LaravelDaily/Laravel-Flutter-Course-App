@@ -44,20 +44,16 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void onItemTapped(int index) {
+  Future<void> onItemTapped(int index) async {
     if (index == 2) {
-      logout();
+      final AuthProvider provider =
+      Provider.of<AuthProvider>(context, listen: false);
+
+      await provider.logOut();
     } else {
       setState(() {
         selectedIndex = index;
       });
     }
-  }
-
-  Future<void> logout() async {
-    final AuthProvider provider =
-    Provider.of<AuthProvider>(context, listen: false);
-
-    await provider.logOut();
   }
 }
