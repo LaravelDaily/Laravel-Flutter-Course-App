@@ -61,7 +61,7 @@ class _TransactionsState extends State<Transactions> {
                             TextButton(
                                 child: Text("Delete"),
                                 onPressed: () => deleteTransaction(
-                                    provider.deleteTransaction, transaction)),
+                                    provider.deleteTransaction, transaction, context)),
                           ],
                         );
                       });
@@ -84,7 +84,7 @@ class _TransactionsState extends State<Transactions> {
     );
   }
 
-  Future deleteTransaction(Function callback, Transaction transaction) async {
+  Future deleteTransaction(Function callback, Transaction transaction, BuildContext context) async {
     await callback(transaction);
     Navigator.pop(context);
   }
