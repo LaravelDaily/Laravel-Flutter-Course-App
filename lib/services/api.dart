@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:my_first_app/models/category.dart';
+import 'package:my_first_app/models/transaction.dart';
 
 class ApiService {
   late String token;
@@ -65,6 +66,71 @@ class ApiService {
 
   Future<void> deleteCategory(id) async {
     String uri = baseUrl + 'categories/' + id.toString();
+    http.Response response = await http.delete(
+      Uri.parse(uri),
+      headers: {
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      },
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Error happened on delete');
+    }
+  }
+
+  Future<List<Transaction>> fetchTransactions() async {
+    http.Response response = await http.get(
+      Uri.parse(baseUrl + 'transactions'),
+      headers: {
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      },
+    );
+
+    List transactions = jsonDecode(response.body);
+
+    return transactions.map((transaction) => Transaction.fromJson(transaction)).toList();
+  }
+
+  Future<Transaction> addTransaction(String name) async {
+    String uri = baseUrl + 'transactions';
+
+    http.Response response = await http.post(Uri.parse(uri),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token'
+        },
+        body: jsonEncode({'name': name}));
+
+    if (response.statusCode != 201) {
+      throw Exception('Error happened on create');
+    }
+
+    return Transaction.fromJson(jsonDecode(response.body));
+  }
+
+  Future<Transaction> updateTransaction(Transaction transaction) async {
+    String uri = baseUrl + 'transactions/' + transaction.id.toString();
+
+    http.Response response = await http.put(Uri.parse(uri),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token'
+        },
+        body: jsonEncode({'name': transaction.amount}));
+
+    if (response.statusCode != 200) {
+      throw Exception('Error happened on update');
+    }
+
+    return Transaction.fromJson(jsonDecode(response.body));
+  }
+
+  Future<void> deleteTransaction(id) async {
+    String uri = baseUrl + 'transactions/' + id.toString();
     http.Response response = await http.delete(
       Uri.parse(uri),
       headers: {
