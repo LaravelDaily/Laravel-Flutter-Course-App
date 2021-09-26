@@ -20,9 +20,9 @@ class TransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addTransaction(String name) async {
+  Future<void> addTransaction(String amount, String category, String description, String date) async {
     try {
-      Transaction addedTransaction = await apiService.addTransaction(name);
+      Transaction addedTransaction = await apiService.addTransaction(amount, category, description, date);
       transactions.add(addedTransaction);
 
       notifyListeners();

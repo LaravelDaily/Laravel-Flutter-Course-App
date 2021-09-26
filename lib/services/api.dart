@@ -93,7 +93,7 @@ class ApiService {
     return transactions.map((transaction) => Transaction.fromJson(transaction)).toList();
   }
 
-  Future<Transaction> addTransaction(String name) async {
+  Future<Transaction> addTransaction(String amount, String category, String description, String date) async {
     String uri = baseUrl + 'transactions';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -102,7 +102,12 @@ class ApiService {
           HttpHeaders.acceptHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token'
         },
-        body: jsonEncode({'name': name}));
+        body: jsonEncode({
+          'amount': amount,
+          'category_id': category,
+          'description': description,
+          'transaction_date': date
+        }));
 
     if (response.statusCode != 201) {
       throw Exception('Error happened on create');
@@ -120,7 +125,12 @@ class ApiService {
           HttpHeaders.acceptHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token'
         },
-        body: jsonEncode({'name': transaction.amount}));
+        body: jsonEncode({
+          'amount': transaction.amount,
+          'category_id': transaction.categoryId,
+          'description': transaction.description,
+          'transaction_date': transaction.transactionDate
+        }));
 
     if (response.statusCode != 200) {
       throw Exception('Error happened on update');

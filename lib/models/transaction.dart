@@ -7,8 +7,6 @@ class Transaction {
   String transactionDate;
   String createdAt;
 
-  static String dateFormat = 'M/d/y';
-
   Transaction({
     required this.id,
     required this.categoryId,
