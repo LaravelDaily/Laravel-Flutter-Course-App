@@ -18,7 +18,7 @@ class _TransactionsState extends State<Transactions> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Categories'),
+        title: Text('Transactions'),
       ),
       body: ListView.builder(
         itemCount: transactions.length,
